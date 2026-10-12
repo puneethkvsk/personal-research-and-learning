@@ -21,4 +21,14 @@
 
 ### Processor controlled boot sequence:
 
-#### 
+#### Processor controlled boot sequence is also "baked in" and it is not something that is user programmed. It runs from the ROM. Refer to _**Figure 15**_ in the datasheet for the flow chart.
+
+The flow chart is described below:
+1. System reads the CPUID from the SIO_CPUID register in the SIO block. If it reads 0 (means core 0), the process continues. Else, it sleeps until an entry point is provided.
+2. System checks if PoR rescue flag is set. If yes, the execution halts here and waits for aN instruction from a debugger
+3. System checks for the watchdog scratch registers for magic numbers to see if it needs to load some code from SRAM. If it finds those magic numbers, it loads the code from that vector address. Otherwise, it jumps to main() in bootrom_main.c
+4. If BOOTSEL pin is not being held LOW, the system will attempt a flash boot. For this purpose, it initializes the SSI channel, initializes the GPIOs required and communicates with the flash. It loads the first 256 bytes of the flash and checks for the checksum. If checksum passes, the system enters boot2 (flash second stage). Else, the crystal oscillator is started, PLLs are initialized, USB is clocked at 48MHz and the system enters USB device mode bootcode.
+
+### Boot stage 2
+
+
