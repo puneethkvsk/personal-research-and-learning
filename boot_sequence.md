@@ -7,7 +7,9 @@
 ### Hardware controlled boot sequence:
 
 #### Hardware controller boot sequence is not user controlled. It happens automatically. User cannot make any changes to this process except add a watchdog to restart the power-on state machine. 
+
 ![](/home/andresiniesta/Pictures/Screenshots/Screenshot from 2026-10-12 17-27-45.png)
+
 1. Power is applied to the chip - This means RUN pin is high, chip is in RESET state as long as RUN pin is LOW
 2. The on-chip voltage regulator turns ON. The system waits until the digital supply (DVDD) is stable
 3. The Power-On State Machine starts. The required hardware blocks and peripherals need to be turned on in a particular order since, one's presence would be required by the other. (Refer to _**Figure 27**_ in datasheet)
@@ -22,7 +24,9 @@
 ### Processor controlled boot sequence:
 
 #### Processor controlled boot sequence is also "baked in" and it is not something that is user programmed. It runs from the ROM. Refer to _**Figure 15**_ in the datasheet for the flow chart.
+
 ![](/home/andresiniesta/Pictures/Screenshots/Screenshot from 2026-10-12 17-25-20.png)
+
 The flow chart is described below:
 1. System reads the CPUID from the SIO_CPUID register in the SIO block. If it reads 0 (means core 0), the process continues. Else, it sleeps until an entry point is provided.
 2. System checks if PoR rescue flag is set. If yes, the execution halts here and waits for aN instruction from a debugger
